@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         mainPresenter.getWishlist().observe(this, Observer { movies ->
             when (movies) {
-                is Either.Right -> movies.value.forEach {
+                is Either.Success -> movies.value.forEach {
                     Log.d("TAG", "Movie $it")
                 }
                 else -> TODO()

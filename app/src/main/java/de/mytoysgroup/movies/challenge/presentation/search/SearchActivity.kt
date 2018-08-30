@@ -45,8 +45,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun manageSearchResult(either: Either<Exception, List<Movie>>) {
         when (either) {
-            is Either.Left -> TODO("Show error")
-            is Either.Right -> adapter.addNewItems(either.value)
+            is Either.Failure -> TODO("Show error")
+            is Either.Success -> adapter.addNewItems(either.value)
         }
     }
 
