@@ -21,5 +21,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d("TAG", "Salida $it")
             }
         })
+
+        mainPresenter.getMovieById().observe(this, Observer { movie ->
+            Log.d("TAG", "Peli $movie")
+        })
     }
 }

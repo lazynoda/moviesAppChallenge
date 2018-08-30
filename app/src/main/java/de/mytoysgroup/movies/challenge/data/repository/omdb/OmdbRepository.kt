@@ -6,4 +6,7 @@ class OmdbRepository private constructor(private val networkDataSource: NetworkD
 
     fun search(query: String) =
             networkDataSource.search(query)
+
+    fun getMovieById(movieId: String) =
+            networkDataSource.getMovieById(movieId)
 }
