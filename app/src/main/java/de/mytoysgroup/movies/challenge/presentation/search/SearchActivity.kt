@@ -39,15 +39,16 @@ class SearchActivity : AppCompatActivity() {
         return true
     }
 
-    private fun manageSearch(either: Either<Exception, List<Movie>>) {
+    private fun requestSearch(query: String) {
+        presenter.search(query).observe(::manageSearchResult)
+    }
+
+    private fun manageSearchResult(either: Either<Exception, List<Movie>>) {
         when (either) {
             is Either.Left -> TODO("Show error")
             is Either.Right -> adapter.addNewItems(either.value)
         }
     }
-
-    private inline fun <T> LiveData<T>.observe(crossinline function: (T) -> Unit) =
-            observe(this@SearchActivity, Observer { it?.let(function) })
 
     private fun Menu.setupSearchView() {
         val menuItem = findItem(R.id.action_search)
@@ -56,7 +57,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onQueryTextSubmit(query: String): Boolean {
 
-                presenter.search(query).observe(::manageSearch)
+                requestSearch(query)
 
                 menuItem.collapseActionView()
                 return true
@@ -67,4 +68,7 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
+
+    private inline fun <T> LiveData<T>.observe(crossinline function: (T) -> Unit) =
+            observe(this@SearchActivity, Observer { it?.let(function) })
 }
