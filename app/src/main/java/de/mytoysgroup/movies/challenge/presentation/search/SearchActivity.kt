@@ -1,20 +1,17 @@
 package de.mytoysgroup.movies.challenge.presentation.search
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import de.mytoysgroup.movies.challenge.BaseActivity
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.Either
 import de.mytoysgroup.movies.challenge.domain.model.Movie
-import de.mytoysgroup.movies.challenge.presenter
 import kotlinx.android.synthetic.main.activity_search.*
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
     private val presenter by lazy { presenter<SearchPresenter>(this) }
 
@@ -68,7 +65,4 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
-
-    private inline fun <T> LiveData<T>.observe(crossinline function: (T) -> Unit) =
-            observe(this@SearchActivity, Observer { it?.let(function) })
 }
