@@ -8,7 +8,6 @@ import android.view.Menu
 import android.widget.Toast
 import de.mytoysgroup.movies.challenge.BaseActivity
 import de.mytoysgroup.movies.challenge.R
-import de.mytoysgroup.movies.challenge.domain.Either
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import kotlinx.android.synthetic.main.activity_search.*
 
@@ -30,6 +29,8 @@ class SearchActivity : BaseActivity() {
             layoutManager = GridLayoutManager(this@SearchActivity, 2, LinearLayoutManager.VERTICAL, false)
             adapter = SearchAdapter(::selectMovie)
         }
+
+        setupObservers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -38,15 +39,16 @@ class SearchActivity : BaseActivity() {
         return true
     }
 
-    private fun requestSearch(query: String) {
-        presenter.search(query).observe(::manageSearchResult)
+    private fun setupObservers() = with(presenter) {
+        searchData.observe(::manageSearchResult)
     }
 
-    private fun manageSearchResult(either: Either<Exception, List<Movie>>) {
-        when (either) {
-            is Either.Failure -> TODO("Show error")
-            is Either.Success -> adapter.addNewItems(either.value)
-        }
+    private fun requestSearch(query: String) {
+        presenter.search(query)
+    }
+
+    private fun manageSearchResult(movies: List<Movie>) {
+        adapter.addNewItems(movies)
     }
 
     private fun selectMovie(movie: Movie) {
