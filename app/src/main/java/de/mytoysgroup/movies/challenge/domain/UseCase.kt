@@ -22,26 +22,14 @@ abstract class UseCase<I, O> : Worker() {
                 .setInputData(params.toInputData())
                 .build()
 
-        val workManager = WorkManager.getInstance()
-        workManager.enqueue(workRequest)
-        val liveWorkStatus = workManager.getStatusById(workRequest.id)
+        val liveWorkStatus = runWorker(workRequest)
 
-        val observer = object : Observer<WorkStatus> {
-            override fun onChanged(workStatus: WorkStatus?) {
-                workStatus ?: return
-                if (workStatus.state.isFinished) {
-                    liveWorkStatus.removeObserver(this)
-
-                    if (State.SUCCEEDED == workStatus.state) {
-                        liveData.value = Either.Right(workStatus.toOutput())
-                    } else {
-                        liveData.value = Either.Left(Exception())
-                    }
-                }
+        liveWorkStatus.observeOnce {
+            liveData.value = when (it.state) {
+                State.SUCCEEDED -> Either.Right(it.toOutput())
+                else -> Either.Left(Exception())
             }
         }
-
-        liveWorkStatus.observeForever(observer)
         return liveData
     }
 
@@ -58,6 +46,24 @@ abstract class UseCase<I, O> : Worker() {
     }
 
     internal abstract fun run(params: I): O
+
+    private fun runWorker(workRequest: OneTimeWorkRequest): LiveData<WorkStatus> {
+        val workManager = WorkManager.getInstance()
+        workManager.enqueue(workRequest)
+        return workManager.getStatusById(workRequest.id)
+    }
+
+    private inline fun LiveData<WorkStatus>.observeOnce(crossinline action: (workStatus: WorkStatus) -> Unit) {
+        observeForever(object : Observer<WorkStatus> {
+            override fun onChanged(workStatus: WorkStatus?) {
+                workStatus ?: return
+                if (workStatus.state.isFinished) {
+                    removeObserver(this)
+                    action(workStatus)
+                }
+            }
+        })
+    }
 
     private fun Data.toInput() = inputMapper.fromMap(JSONObject(getString("input")).toMap())
 
