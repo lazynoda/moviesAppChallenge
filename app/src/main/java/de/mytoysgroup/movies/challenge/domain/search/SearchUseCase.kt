@@ -10,17 +10,20 @@ class SearchUseCase private constructor(private val omdbRepository: OmdbReposito
     constructor() : this(OmdbRepository())
 
     override val inputConverter = object : DataConverter<String> {
-        override fun fromMap(map: Map<String, Any?>) = map["key"] as String
-        override fun toMap(value: String) = mapOf("key" to value)
+        override fun fromMap(map: Map<String, Any?>) =
+                map["key"] as String
+
+        override fun toMap(value: String) =
+                mapOf("key" to value)
     }
 
     override val outputConverter = object : DataConverter<List<Movie>> {
-        override fun fromMap(map: Map<String, Any?>): List<Movie> =
+        override fun fromMap(map: Map<String, Any?>) =
                 (map["key"] as List<Map<String, Any?>>).map { Movie.fromMap(it) }
 
         override fun toMap(value: List<Movie>) =
                 mapOf("key" to value.map { Movie.toMap(it) })
     }
 
-    override fun executeAsync(params: String) = omdbRepository.search(params)
+    override fun run(params: String) = omdbRepository.search(params)
 }

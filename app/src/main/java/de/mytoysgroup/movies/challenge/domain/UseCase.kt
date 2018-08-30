@@ -43,7 +43,7 @@ abstract class UseCase<I, O> : Worker() {
 
     final override fun doWork() = try {
 
-        val output = executeAsync(inputData.toInput())
+        val output = run(inputData.toInput())
         outputData = output.toOutputData()
 
         Result.SUCCESS
@@ -53,7 +53,7 @@ abstract class UseCase<I, O> : Worker() {
         Result.FAILURE
     }
 
-    protected abstract fun executeAsync(params: I): O
+    internal abstract fun run(params: I): O
 
     private fun Data.toInput() = inputConverter.fromMap(JSONObject(getString("input")).toMap())
 
