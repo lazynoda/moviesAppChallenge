@@ -26,8 +26,8 @@ abstract class UseCase<I, O> : Worker() {
 
         liveWorkStatus.observeOnce {
             liveData.value = when (it.state) {
-                State.SUCCEEDED -> Either.Right(it.toOutput())
-                else -> Either.Left(Exception())
+                State.SUCCEEDED -> Either.Success(it.toOutput())
+                else -> Either.Failure(Exception())
             }
         }
         return liveData

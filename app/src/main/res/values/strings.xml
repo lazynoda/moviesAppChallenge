@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MoviesChallenge</string>
+    <string name="deep_linking_scheme">mytoys</string>
+    <string name="deep_linking_host">mytoys.de</string>
 </resources>
