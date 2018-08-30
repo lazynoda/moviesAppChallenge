@@ -1,13 +1,16 @@
 package de.mytoysgroup.movies.challenge.domain.search
 
-import android.content.Context
 import de.mytoysgroup.movies.challenge.data.repository.wishlist.WishlistRepository
 import de.mytoysgroup.movies.challenge.domain.DataConverter
 import de.mytoysgroup.movies.challenge.domain.UseCase
 
-class RemoveFromWishlistUseCase private constructor(private val wishlistRepository: WishlistRepository) : UseCase<String, Unit>() {
+class RemoveFromWishlistUseCase private constructor(wishlistRepository: WishlistRepository? = null) : UseCase<String, Unit>() {
 
-    constructor(context: Context) : this(WishlistRepository(context))
+    constructor() : this(null)
+
+    private val wishlistRepository by lazy {
+        wishlistRepository ?: WishlistRepository(applicationContext)
+    }
 
     override val inputConverter = object : DataConverter<String> {
         override fun fromMap(map: Map<String, Any?>) =
