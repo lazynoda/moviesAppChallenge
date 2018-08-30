@@ -1,13 +1,13 @@
 package de.mytoysgroup.movies.challenge.domain.model
 
 import android.net.Uri
-import de.mytoysgroup.movies.challenge.domain.DataConverter
+import de.mytoysgroup.movies.challenge.domain.DataMapper
 
 data class Movie(val id: String,
                  val title: String,
                  val poster: Uri) {
 
-    companion object Converter : DataConverter<Movie> {
+    companion object Mapper : DataMapper<Movie> {
         override fun fromMap(map: Map<String, Any?>) = Movie(
                 map["id"] as String,
                 map["title"] as String,

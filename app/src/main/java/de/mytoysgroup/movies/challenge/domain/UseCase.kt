@@ -1,5 +1,6 @@
 package de.mytoysgroup.movies.challenge.domain
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.util.Log
@@ -10,10 +11,12 @@ import org.json.JSONObject
 
 abstract class UseCase<I, O> : Worker() {
 
-    abstract val inputConverter: DataConverter<I>
-    abstract val outputConverter: DataConverter<O>
+    abstract val inputMapper: DataMapper<I>
+    abstract val outputMapper: DataMapper<O>
 
-    fun execute(params: I, success: MutableLiveData<O>, error: MutableLiveData<Exception>) {
+    fun execute(params: I): LiveData<Either<Exception, O>> {
+
+        val liveData = MutableLiveData<Either<Exception, O>>()
 
         val workRequest = OneTimeWorkRequest.Builder(this::class.java)
                 .setInputData(params.toInputData())
@@ -30,15 +33,16 @@ abstract class UseCase<I, O> : Worker() {
                     liveWorkStatus.removeObserver(this)
 
                     if (State.SUCCEEDED == workStatus.state) {
-                        success.value = workStatus.toOutput()
+                        liveData.value = Either.Right(workStatus.toOutput())
                     } else {
-                        error.value = null
+                        liveData.value = Either.Left(Exception())
                     }
                 }
             }
         }
 
         liveWorkStatus.observeForever(observer)
+        return liveData
     }
 
     final override fun doWork() = try {
@@ -55,16 +59,16 @@ abstract class UseCase<I, O> : Worker() {
 
     internal abstract fun run(params: I): O
 
-    private fun Data.toInput() = inputConverter.fromMap(JSONObject(getString("input")).toMap())
+    private fun Data.toInput() = inputMapper.fromMap(JSONObject(getString("input")).toMap())
 
     private fun I.toInputData() = Data.Builder()
-            .putString("input", JSONObject(inputConverter.toMap(this)).toString())
+            .putString("input", JSONObject(inputMapper.toMap(this)).toString())
             .build()
 
-    private fun WorkStatus.toOutput() = outputConverter.fromMap(JSONObject(outputData.getString("output")).toMap())
+    private fun WorkStatus.toOutput() = outputMapper.fromMap(JSONObject(outputData.getString("output")).toMap())
 
     private fun O.toOutputData() = Data.Builder()
-            .putString("output", JSONObject(outputConverter.toMap(this)).toString())
+            .putString("output", JSONObject(outputMapper.toMap(this)).toString())
             .build()
 
     @Throws(JSONException::class)

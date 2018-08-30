@@ -1,22 +1,28 @@
 package de.mytoysgroup.movies.challenge
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import de.mytoysgroup.movies.challenge.domain.model.Movie
-import de.mytoysgroup.movies.challenge.domain.search.GetMovieByIdUseCase
-import de.mytoysgroup.movies.challenge.domain.search.SearchUseCase
+import de.mytoysgroup.movies.challenge.domain.search.*
 
 class MainPresenter : ViewModel() {
 
     private val searchUseCase by lazy { SearchUseCase() }
     private val getMovieByIdUseCase by lazy { GetMovieByIdUseCase() }
+    private val addToWishlistUseCase by lazy { AddToWishlistUseCase() }
+    private val removeFromWishlistUseCase by lazy { RemoveFromWishlistUseCase() }
+    private val getWishlistUseCase by lazy { GetWishlistMoviesUseCase() }
 
-    fun search(): LiveData<List<Movie>> = MutableLiveData<List<Movie>>().also {
-        searchUseCase.execute("Avengers", it, MutableLiveData())
-    }
+    fun search() =
+            searchUseCase.execute("Avengers")
 
-    fun getMovieById(): LiveData<Movie> = MutableLiveData<Movie>().also {
-        getMovieByIdUseCase.execute("tt0803093", it, MutableLiveData())
-    }
+    fun getMovieById() =
+            getMovieByIdUseCase.execute("tt0803093")
+
+    fun addToWishlist() =
+            addToWishlistUseCase.execute("tt0803093")
+
+    fun removeFromWishlist() =
+            removeFromWishlistUseCase.execute("tt0803093")
+
+    fun getWishlist() =
+            getWishlistUseCase.execute(Unit)
 }
