@@ -10,8 +10,8 @@ import org.json.JSONObject
 
 abstract class UseCase<I, O> : Worker() {
 
-    abstract val inputConverter: DataConverter<I>
-    abstract val outputConverter: DataConverter<O>
+    abstract val inputMapper: DataMapper<I>
+    abstract val outputMapper: DataMapper<O>
 
     fun execute(params: I, success: MutableLiveData<O>, error: MutableLiveData<Exception>) {
 
@@ -55,16 +55,16 @@ abstract class UseCase<I, O> : Worker() {
 
     internal abstract fun run(params: I): O
 
-    private fun Data.toInput() = inputConverter.fromMap(JSONObject(getString("input")).toMap())
+    private fun Data.toInput() = inputMapper.fromMap(JSONObject(getString("input")).toMap())
 
     private fun I.toInputData() = Data.Builder()
-            .putString("input", JSONObject(inputConverter.toMap(this)).toString())
+            .putString("input", JSONObject(inputMapper.toMap(this)).toString())
             .build()
 
-    private fun WorkStatus.toOutput() = outputConverter.fromMap(JSONObject(outputData.getString("output")).toMap())
+    private fun WorkStatus.toOutput() = outputMapper.fromMap(JSONObject(outputData.getString("output")).toMap())
 
     private fun O.toOutputData() = Data.Builder()
-            .putString("output", JSONObject(outputConverter.toMap(this)).toString())
+            .putString("output", JSONObject(outputMapper.toMap(this)).toString())
             .build()
 
     @Throws(JSONException::class)

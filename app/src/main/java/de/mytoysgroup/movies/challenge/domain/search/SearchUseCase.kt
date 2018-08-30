@@ -1,7 +1,7 @@
 package de.mytoysgroup.movies.challenge.domain.search
 
 import de.mytoysgroup.movies.challenge.data.repository.omdb.OmdbRepository
-import de.mytoysgroup.movies.challenge.domain.DataConverter
+import de.mytoysgroup.movies.challenge.domain.DataMapper
 import de.mytoysgroup.movies.challenge.domain.UseCase
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 
@@ -9,7 +9,7 @@ class SearchUseCase private constructor(private val omdbRepository: OmdbReposito
 
     constructor() : this(OmdbRepository())
 
-    override val inputConverter = object : DataConverter<String> {
+    override val inputMapper = object : DataMapper<String> {
         override fun fromMap(map: Map<String, Any?>) =
                 map["key"] as String
 
@@ -17,7 +17,7 @@ class SearchUseCase private constructor(private val omdbRepository: OmdbReposito
                 mapOf("key" to value)
     }
 
-    override val outputConverter = object : DataConverter<List<Movie>> {
+    override val outputMapper = object : DataMapper<List<Movie>> {
         override fun fromMap(map: Map<String, Any?>) =
                 (map["key"] as List<Map<String, Any?>>).map { Movie.fromMap(it) }
 

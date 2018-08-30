@@ -1,6 +1,6 @@
 package de.mytoysgroup.movies.challenge.domain
 
-interface DataConverter<T> {
+interface DataMapper<T> {
 
     fun fromMap(map: Map<String, Any?>): T
 

@@ -1,7 +1,7 @@
 package de.mytoysgroup.movies.challenge.domain.search
 
 import de.mytoysgroup.movies.challenge.data.repository.wishlist.WishlistRepository
-import de.mytoysgroup.movies.challenge.domain.DataConverter
+import de.mytoysgroup.movies.challenge.domain.DataMapper
 import de.mytoysgroup.movies.challenge.domain.UseCase
 
 class RemoveFromWishlistUseCase private constructor(wishlistRepository: WishlistRepository? = null) : UseCase<String, Unit>() {
@@ -12,7 +12,7 @@ class RemoveFromWishlistUseCase private constructor(wishlistRepository: Wishlist
         wishlistRepository ?: WishlistRepository(applicationContext)
     }
 
-    override val inputConverter = object : DataConverter<String> {
+    override val inputMapper = object : DataMapper<String> {
         override fun fromMap(map: Map<String, Any?>) =
                 map["key"] as String
 
@@ -20,7 +20,7 @@ class RemoveFromWishlistUseCase private constructor(wishlistRepository: Wishlist
                 mapOf("key" to value)
     }
 
-    override val outputConverter = object : DataConverter<Unit> {
+    override val outputMapper = object : DataMapper<Unit> {
         override fun fromMap(map: Map<String, Any?>) =
                 Unit
 

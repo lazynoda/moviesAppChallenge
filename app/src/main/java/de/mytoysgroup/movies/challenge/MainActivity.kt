@@ -14,16 +14,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mainPresenter.search().observe(this, Observer { movies ->
-            movies ?: return@Observer
-            Log.d("TAG", "Salida ${movies.size}")
-            movies.forEach {
-                Log.d("TAG", "Salida $it")
-            }
+//        mainPresenter.addToWishlist().observe(this, Observer { _ ->
+//            Log.d("TAG", "Movie added")
+//        })
+
+        mainPresenter.removeFromWishlist().observe(this, Observer { _ ->
+            Log.d("TAG", "Movie deleted")
         })
 
-        mainPresenter.getMovieById().observe(this, Observer { movie ->
-            Log.d("TAG", "Peli $movie")
+        mainPresenter.getWishlist().observe(this, Observer { movies ->
+            movies?.forEach {
+                Log.d("TAG", "Movie $it")
+            }
         })
     }
 }
