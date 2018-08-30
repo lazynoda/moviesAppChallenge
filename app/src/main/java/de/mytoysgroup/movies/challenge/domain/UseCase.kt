@@ -1,5 +1,6 @@
 package de.mytoysgroup.movies.challenge.domain
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.util.Log
@@ -13,7 +14,9 @@ abstract class UseCase<I, O> : Worker() {
     abstract val inputMapper: DataMapper<I>
     abstract val outputMapper: DataMapper<O>
 
-    fun execute(params: I, success: MutableLiveData<O>, error: MutableLiveData<Exception>) {
+    fun execute(params: I): LiveData<Either<Exception, O>> {
+
+        val liveData = MutableLiveData<Either<Exception, O>>()
 
         val workRequest = OneTimeWorkRequest.Builder(this::class.java)
                 .setInputData(params.toInputData())
@@ -30,15 +33,16 @@ abstract class UseCase<I, O> : Worker() {
                     liveWorkStatus.removeObserver(this)
 
                     if (State.SUCCEEDED == workStatus.state) {
-                        success.value = workStatus.toOutput()
+                        liveData.value = Either.Right(workStatus.toOutput())
                     } else {
-                        error.value = null
+                        liveData.value = Either.Left(Exception())
                     }
                 }
             }
         }
 
         liveWorkStatus.observeForever(observer)
+        return liveData
     }
 
     final override fun doWork() = try {

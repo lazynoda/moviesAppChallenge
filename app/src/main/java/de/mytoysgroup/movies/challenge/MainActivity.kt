@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import de.mytoysgroup.movies.challenge.domain.Either
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,8 +24,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         mainPresenter.getWishlist().observe(this, Observer { movies ->
-            movies?.forEach {
-                Log.d("TAG", "Movie $it")
+            when (movies) {
+                is Either.Right -> movies.value.forEach {
+                    Log.d("TAG", "Movie $it")
+                }
+                else -> TODO()
             }
         })
     }
