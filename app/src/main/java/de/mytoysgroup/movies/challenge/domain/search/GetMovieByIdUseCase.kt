@@ -10,17 +10,20 @@ class GetMovieByIdUseCase private constructor(private val omdbRepository: OmdbRe
     constructor() : this(OmdbRepository())
 
     override val inputConverter = object : DataConverter<String> {
-        override fun fromMap(map: Map<String, Any?>) = map["key"] as String
-        override fun toMap(value: String) = mapOf("key" to value)
+        override fun fromMap(map: Map<String, Any?>) =
+                map["key"] as String
+
+        override fun toMap(value: String) =
+                mapOf("key" to value)
     }
 
     override val outputConverter = object : DataConverter<Movie> {
-        override fun fromMap(map: Map<String, Any?>): Movie =
+        override fun fromMap(map: Map<String, Any?>) =
                 Movie.fromMap(map)
 
         override fun toMap(value: Movie) =
                 Movie.toMap(value)
     }
 
-    override fun executeAsync(params: String) = omdbRepository.getMovieById(params)
+    override fun run(params: String) = omdbRepository.getMovieById(params)
 }
