@@ -2,8 +2,10 @@ package de.mytoysgroup.movies.challenge.presentation.search
 
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.widget.Toast
 import de.mytoysgroup.movies.challenge.BaseActivity
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.Either
@@ -25,8 +27,8 @@ class SearchActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         with(searchResultLayout) {
-            layoutManager = GridLayoutManager(this@SearchActivity, 2)
-            adapter = SearchAdapter()
+            layoutManager = GridLayoutManager(this@SearchActivity, 2, LinearLayoutManager.VERTICAL, false)
+            adapter = SearchAdapter(::selectMovie)
         }
     }
 
@@ -45,6 +47,10 @@ class SearchActivity : BaseActivity() {
             is Either.Failure -> TODO("Show error")
             is Either.Success -> adapter.addNewItems(either.value)
         }
+    }
+
+    private fun selectMovie(movie: Movie) {
+        Toast.makeText(this, "Movie ${movie.id}", Toast.LENGTH_SHORT).show()
     }
 
     private fun Menu.setupSearchView() {
