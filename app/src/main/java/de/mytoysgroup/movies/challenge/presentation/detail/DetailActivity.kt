@@ -21,7 +21,7 @@ class DetailActivity : BaseActivity() {
 
         setupObservers()
 
-        val pathData = intent?.data?.lastPathSegment ?: TODO()
+        val pathData = intent?.data?.lastPathSegment ?: return // TODO: Close screen?
         presenter.getMovie(pathData)
     }
 

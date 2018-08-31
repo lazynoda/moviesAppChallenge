@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.View
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.presentation.BaseActivity
@@ -33,6 +34,8 @@ class ListActivity : BaseActivity() {
         }
 
         setupObservers()
+
+        switchListButton.setOnClickListener(::onSwitchList)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -42,18 +45,22 @@ class ListActivity : BaseActivity() {
     }
 
     private fun setupObservers() = with(presenter) {
-        searchData.observe(::manageSearchResult)
-    }
-
-    private fun requestSearch(query: String) {
-        presenter.search(query)
+        moviesLiveData.observe(::manageSearchResult)
     }
 
     private fun manageSearchResult(movies: List<Movie>) {
         adapter.updateItems(movies)
     }
 
+    private fun requestSearch(query: String) {
+        presenter.search(query)
+    }
+
     private fun selectMovie(movie: Movie) = navigateTo(movie.id)
+
+    private fun onSwitchList(view: View) {
+        presenter.showWishlist()
+    }
 
     private fun Menu.setupSearchView() {
         val menuItem = findItem(R.id.action_search)

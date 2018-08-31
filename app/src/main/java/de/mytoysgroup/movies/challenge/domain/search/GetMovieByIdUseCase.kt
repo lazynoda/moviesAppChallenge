@@ -1,5 +1,6 @@
 package de.mytoysgroup.movies.challenge.domain.search
 
+import android.content.Context
 import de.mytoysgroup.movies.challenge.data.repository.omdb.OmdbRepository
 import de.mytoysgroup.movies.challenge.domain.Mappers
 import de.mytoysgroup.movies.challenge.domain.UseCase
@@ -10,6 +11,7 @@ class GetMovieByIdUseCase private constructor(private val omdbRepository: OmdbRe
                                               isMovieInWishlistUseCase: IsMovieInWishlistUseCase?) : UseCase<String, Movie>() {
 
     constructor() : this(OmdbRepository(), null)
+    constructor(context: Context) : this(OmdbRepository(), IsMovieInWishlistUseCase(context))
 
     override val inputMapper = Mappers.STRING
     override val outputMapper = Mappers.MOVIE

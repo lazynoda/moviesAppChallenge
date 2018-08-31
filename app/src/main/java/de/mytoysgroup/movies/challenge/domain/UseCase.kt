@@ -29,7 +29,8 @@ abstract class UseCase<I, O> : Worker() {
 
         val liveWorkStatus = runWorker(workRequest)
 
-        liveWorkStatus.observeOnce {
+        liveWorkStatus.whenWorkFinish {
+            Log.d(this::class.java.simpleName, "Notify work result: ${it.state.name}")
             liveData.value = when (it.state) {
                 State.SUCCEEDED -> Either.Success(it.toOutput())
                 else -> Either.Failure(Exception())
@@ -57,13 +58,14 @@ abstract class UseCase<I, O> : Worker() {
         return workManager.getStatusById(workRequest.id)
     }
 
-    private inline fun LiveData<WorkStatus>.observeOnce(crossinline action: (workStatus: WorkStatus) -> Unit) {
+    private inline fun LiveData<WorkStatus>.whenWorkFinish(crossinline action: (workStatus: WorkStatus) -> Unit) {
         observeForever(object : Observer<WorkStatus> {
             override fun onChanged(workStatus: WorkStatus?) {
+                Log.d(this@UseCase::class.java.simpleName, "WorkStatus changed: ${workStatus?.state?.name}")
                 workStatus ?: return
                 if (workStatus.state.isFinished) {
-                    removeObserver(this)
                     action(workStatus)
+                    removeObserver(this)
                 }
             }
         })

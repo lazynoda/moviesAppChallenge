@@ -17,7 +17,7 @@ class DetailPresenter : ViewModel() {
 
     fun getMovie(movieId: String) = getMovieByIdUseCase.execute(movieId) {
         when (it) {
-            is Either.Failure -> TODO()
+            is Either.Failure -> Unit // TODO: Show error
             is Either.Success -> _movie.value = it.value
         }
     }
