@@ -6,7 +6,9 @@ import android.arch.lifecycle.ViewModel
 import de.mytoysgroup.movies.challenge.domain.model.Either
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.domain.search.SearchUseCase
+import de.mytoysgroup.movies.challenge.domain.wishlist.AddToWishlistUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.GetWishlistMoviesUseCase
+import de.mytoysgroup.movies.challenge.domain.wishlist.RemoveFromWishlistUseCase
 import kotlin.properties.Delegates
 
 class ListPresenter : ViewModel() {
@@ -18,6 +20,8 @@ class ListPresenter : ViewModel() {
 
     private val searchUseCase by lazy { SearchUseCase() }
     private val getWishlistMoviesUseCase by lazy { GetWishlistMoviesUseCase() }
+    private val addToWishlistUseCase by lazy { AddToWishlistUseCase() }
+    private val removeFromWishlistUseCase by lazy { RemoveFromWishlistUseCase() }
 
     private var viewType by Delegates.observable<ViewType>(ViewType.Wishlist) { _, oldValue, newValue ->
         if (oldValue != newValue)
@@ -37,6 +41,12 @@ class ListPresenter : ViewModel() {
     fun showWishlist() {
         viewType = ViewType.Wishlist
     }
+
+    fun changeWishlist(movie: Movie) =
+            if (movie.wishlist)
+                removeFromWishlistUseCase.execute(movie.id) { wishlistUpdated(movie) }
+            else
+                addToWishlistUseCase.execute(movie.id) { wishlistUpdated(movie) }
 
     private fun performSearch(query: String?) {
         query ?: return
@@ -64,6 +74,15 @@ class ListPresenter : ViewModel() {
                 _moviesLiveData.value = it.value
             }
         }
+    }
+
+    private fun wishlistUpdated(movie: Movie) {
+        val newMoviesList = if (movie.wishlist && ViewType.Wishlist == viewType)
+            _moviesLiveData.value?.filter { movie.id != it.id }
+        else
+            _moviesLiveData.value?.map { if (movie.id == it.id) it.copy(wishlist = !it.wishlist) else it }
+
+        _moviesLiveData.value = newMoviesList ?: emptyList()
     }
 
     sealed class ViewType {

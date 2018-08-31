@@ -30,7 +30,7 @@ class ListActivity : BaseActivity() {
         with(searchResultLayout) {
             val span = if (Configuration.ORIENTATION_LANDSCAPE == resources.configuration.orientation) 4 else 2
             layoutManager = GridLayoutManager(this@ListActivity, span, LinearLayoutManager.VERTICAL, false)
-            adapter = ListAdapter(::selectMovie)
+            adapter = ListAdapter(::selectMovie, ::changeWishlist)
         }
 
         setupObservers()
@@ -57,6 +57,8 @@ class ListActivity : BaseActivity() {
     }
 
     private fun selectMovie(movie: Movie) = navigateTo(movie.id)
+
+    private fun changeWishlist(movie: Movie) = presenter.changeWishlist(movie)
 
     private fun onSwitchList(view: View) {
         presenter.showWishlist()

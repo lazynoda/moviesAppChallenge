@@ -17,5 +17,8 @@ class AddToWishlistUseCase private constructor(wishlistRepository: WishlistRepos
         wishlistRepository ?: WishlistRepository(applicationContext)
     }
 
-    override fun run(params: String) = wishlistRepository.add(params)
+    override fun run(params: String) {
+        val updated = wishlistRepository.add(params)
+        if (!updated) throw RuntimeException()
+    }
 }

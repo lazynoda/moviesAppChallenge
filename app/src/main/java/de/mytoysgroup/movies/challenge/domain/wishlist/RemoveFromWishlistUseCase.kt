@@ -17,5 +17,8 @@ class RemoveFromWishlistUseCase private constructor(wishlistRepository: Wishlist
         wishlistRepository ?: WishlistRepository(applicationContext)
     }
 
-    override fun run(params: String) = wishlistRepository.remove(params)
+    override fun run(params: String) {
+        val updated = wishlistRepository.remove(params)
+        if (!updated) throw RuntimeException()
+    }
 }
