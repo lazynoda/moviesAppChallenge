@@ -6,7 +6,7 @@ import de.mytoysgroup.movies.challenge.domain.UseCase
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.domain.search.GetMovieByIdUseCase
 
-class GetWishlistMoviesUseCase private constructor(wishlistRepository: WishlistRepository?,
+class GetWishlistMoviesUseCase internal constructor(wishlistRepository: WishlistRepository?,
                                                    getMovieByIdUseCase: GetMovieByIdUseCase?) : UseCase<Unit, List<Movie>>() {
 
     constructor() : this(null, null)

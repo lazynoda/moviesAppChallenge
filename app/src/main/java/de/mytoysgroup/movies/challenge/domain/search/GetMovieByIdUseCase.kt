@@ -7,7 +7,7 @@ import de.mytoysgroup.movies.challenge.domain.UseCase
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.domain.wishlist.IsMovieInWishlistUseCase
 
-class GetMovieByIdUseCase private constructor(private val omdbRepository: OmdbRepository,
+class GetMovieByIdUseCase internal constructor(private val omdbRepository: OmdbRepository,
                                               isMovieInWishlistUseCase: IsMovieInWishlistUseCase?) : UseCase<String, Movie>() {
 
     constructor() : this(OmdbRepository(), null)

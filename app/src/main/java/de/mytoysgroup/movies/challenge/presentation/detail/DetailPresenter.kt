@@ -9,9 +9,9 @@ import de.mytoysgroup.movies.challenge.domain.search.GetMovieByIdUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.AddToWishlistUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.RemoveFromWishlistUseCase
 
-class DetailPresenter(private val getMovieByIdUseCase: GetMovieByIdUseCase,
-                      private val addToWishlistUseCase: AddToWishlistUseCase,
-                      private val removeFromWishlistUseCase: RemoveFromWishlistUseCase) : ViewModel() {
+class DetailPresenter internal constructor(private val getMovieByIdUseCase: GetMovieByIdUseCase,
+                                           private val addToWishlistUseCase: AddToWishlistUseCase,
+                                           private val removeFromWishlistUseCase: RemoveFromWishlistUseCase) : ViewModel() {
 
     constructor() : this(GetMovieByIdUseCase(),
             AddToWishlistUseCase(),
