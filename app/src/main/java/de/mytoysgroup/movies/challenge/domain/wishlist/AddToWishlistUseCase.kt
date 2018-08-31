@@ -1,4 +1,4 @@
-package de.mytoysgroup.movies.challenge.domain.search
+package de.mytoysgroup.movies.challenge.domain.wishlist
 
 import de.mytoysgroup.movies.challenge.data.repository.wishlist.WishlistRepository
 import de.mytoysgroup.movies.challenge.domain.Mappers

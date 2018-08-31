@@ -6,8 +6,8 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import de.mytoysgroup.movies.challenge.BaseActivity
-import de.mytoysgroup.movies.challenge.Navigator.navigateTo
+import de.mytoysgroup.movies.challenge.presentation.BaseActivity
+import de.mytoysgroup.movies.challenge.presentation.Navigator.navigateTo
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import kotlinx.android.synthetic.main.activity_list.*

@@ -1,7 +1,7 @@
 package de.mytoysgroup.movies.challenge.presentation.detail
 
 import android.os.Bundle
-import de.mytoysgroup.movies.challenge.BaseActivity
+import de.mytoysgroup.movies.challenge.presentation.BaseActivity
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.load

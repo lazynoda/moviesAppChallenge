@@ -1,9 +1,10 @@
-package de.mytoysgroup.movies.challenge.domain.search
+package de.mytoysgroup.movies.challenge.domain.wishlist
 
 import de.mytoysgroup.movies.challenge.data.repository.wishlist.WishlistRepository
 import de.mytoysgroup.movies.challenge.domain.Mappers
 import de.mytoysgroup.movies.challenge.domain.UseCase
 import de.mytoysgroup.movies.challenge.domain.model.Movie
+import de.mytoysgroup.movies.challenge.domain.search.GetMovieByIdUseCase
 
 class GetWishlistMoviesUseCase private constructor(wishlistRepository: WishlistRepository?,
                                                    private val getMovieByIdUseCase: GetMovieByIdUseCase) : UseCase<Unit, List<Movie>>() {

@@ -1,4 +1,4 @@
-package de.mytoysgroup.movies.challenge.domain
+package de.mytoysgroup.movies.challenge.domain.model
 
 @Suppress("unused")
 sealed class Either<F, S> {

@@ -3,7 +3,7 @@ package de.mytoysgroup.movies.challenge.presentation.list
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import de.mytoysgroup.movies.challenge.domain.Either
+import de.mytoysgroup.movies.challenge.domain.model.Either
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.domain.search.SearchUseCase
 import de.mytoysgroup.movies.challenge.observeOnce

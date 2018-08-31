@@ -1,8 +1,9 @@
-package de.mytoysgroup.movies.challenge
+package de.mytoysgroup.movies.challenge.presentation
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import de.mytoysgroup.movies.challenge.R
 
 object Navigator {
 

@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.util.Log
 import androidx.work.*
+import de.mytoysgroup.movies.challenge.domain.model.Either
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
