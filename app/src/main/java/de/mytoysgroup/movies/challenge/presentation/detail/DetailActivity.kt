@@ -23,6 +23,8 @@ class DetailActivity : BaseActivity() {
 
         val pathData = intent?.data?.lastPathSegment ?: return // TODO: Close screen?
         presenter.getMovie(pathData)
+
+        wishlistButton.setOnClickListener { presenter.changeWishlist() }
     }
 
     private fun setupObservers() = with(presenter) {
