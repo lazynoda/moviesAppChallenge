@@ -4,13 +4,21 @@ import de.mytoysgroup.movies.challenge.data.repository.omdb.OmdbRepository
 import de.mytoysgroup.movies.challenge.domain.Mappers
 import de.mytoysgroup.movies.challenge.domain.UseCase
 import de.mytoysgroup.movies.challenge.domain.model.Movie
+import de.mytoysgroup.movies.challenge.domain.wishlist.IsMovieInWishlistUseCase
 
-class GetMovieByIdUseCase private constructor(private val omdbRepository: OmdbRepository) : UseCase<String, Movie>() {
+class GetMovieByIdUseCase private constructor(private val omdbRepository: OmdbRepository,
+                                              isMovieInWishlistUseCase: IsMovieInWishlistUseCase?) : UseCase<String, Movie>() {
 
-    constructor() : this(OmdbRepository())
+    constructor() : this(OmdbRepository(), null)
 
     override val inputMapper = Mappers.STRING
     override val outputMapper = Mappers.MOVIE
 
-    override fun run(params: String) = omdbRepository.getMovieById(params)
+    private val isMovieInWishlistUseCase by lazy {
+        isMovieInWishlistUseCase ?: IsMovieInWishlistUseCase(applicationContext)
+    }
+
+    override fun run(params: String) = omdbRepository.getMovieById(params).checkWishlist()
+
+    private fun Movie.checkWishlist() = copy(wishlist = isMovieInWishlistUseCase.run(id))
 }

@@ -1,5 +1,6 @@
 package de.mytoysgroup.movies.challenge.domain.wishlist
 
+import android.content.Context
 import de.mytoysgroup.movies.challenge.data.repository.wishlist.WishlistRepository
 import de.mytoysgroup.movies.challenge.domain.Mappers
 import de.mytoysgroup.movies.challenge.domain.UseCase
@@ -10,6 +11,7 @@ class GetWishlistMoviesUseCase private constructor(wishlistRepository: WishlistR
                                                    private val getMovieByIdUseCase: GetMovieByIdUseCase) : UseCase<Unit, List<Movie>>() {
 
     constructor() : this(null, GetMovieByIdUseCase())
+    constructor(context: Context) : this(WishlistRepository(context), GetMovieByIdUseCase())
 
     override val inputMapper = Mappers.UNIT
     override val outputMapper = Mappers.MOVIE_LIST
