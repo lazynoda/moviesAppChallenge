@@ -6,10 +6,11 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import de.mytoysgroup.movies.challenge.BaseActivity
-import de.mytoysgroup.movies.challenge.Navigator.navigateTo
+import android.view.View
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
+import de.mytoysgroup.movies.challenge.presentation.BaseActivity
+import de.mytoysgroup.movies.challenge.presentation.Navigator.navigateTo
 import kotlinx.android.synthetic.main.activity_list.*
 
 
@@ -17,8 +18,8 @@ class ListActivity : BaseActivity() {
 
     private val presenter by lazy { presenter<ListPresenter>(this) }
 
-    private val adapter: SearchAdapter
-        get() = searchResultLayout.adapter as SearchAdapter
+    private val adapter: ListAdapter
+        get() = searchResultLayout.adapter as ListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +30,12 @@ class ListActivity : BaseActivity() {
         with(searchResultLayout) {
             val span = if (Configuration.ORIENTATION_LANDSCAPE == resources.configuration.orientation) 4 else 2
             layoutManager = GridLayoutManager(this@ListActivity, span, LinearLayoutManager.VERTICAL, false)
-            adapter = SearchAdapter(::selectMovie)
+            adapter = ListAdapter(::selectMovie, ::changeWishlist)
         }
 
         setupObservers()
+
+        switchListButton.setOnClickListener(::onSwitchList)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -42,18 +45,24 @@ class ListActivity : BaseActivity() {
     }
 
     private fun setupObservers() = with(presenter) {
-        searchData.observe(::manageSearchResult)
+        moviesLiveData.observe(::manageSearchResult)
+    }
+
+    private fun manageSearchResult(movies: List<Movie>) {
+        adapter.updateItems(movies)
     }
 
     private fun requestSearch(query: String) {
         presenter.search(query)
     }
 
-    private fun manageSearchResult(movies: List<Movie>) {
-        adapter.addNewItems(movies)
-    }
-
     private fun selectMovie(movie: Movie) = navigateTo(movie.id)
+
+    private fun changeWishlist(movie: Movie) = presenter.changeWishlist(movie)
+
+    private fun onSwitchList(view: View) {
+        presenter.showWishlist()
+    }
 
     private fun Menu.setupSearchView() {
         val menuItem = findItem(R.id.action_search)

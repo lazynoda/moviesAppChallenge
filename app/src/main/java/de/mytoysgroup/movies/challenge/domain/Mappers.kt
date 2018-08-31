@@ -12,6 +12,14 @@ object Mappers {
                 mapOf("key" to value)
     }
 
+    val BOOLEAN = object : DataMapper<Boolean> {
+        override fun fromMap(map: Map<String, Any?>) =
+                map["key"] as Boolean
+
+        override fun toMap(value: Boolean) =
+                mapOf("key" to value)
+    }
+
     val UNIT = object : DataMapper<Unit> {
         override fun fromMap(map: Map<String, Any?>) =
                 Unit

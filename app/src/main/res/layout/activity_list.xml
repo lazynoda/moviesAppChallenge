@@ -26,4 +26,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/switchListButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="32dp"
+        android:background="@drawable/bg_fab"
+        android:elevation="4dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_star_border"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:tint="#FFFFFF" />
+
 </android.support.constraint.ConstraintLayout>

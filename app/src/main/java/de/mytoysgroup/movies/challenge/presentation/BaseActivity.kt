@@ -1,4 +1,4 @@
-package de.mytoysgroup.movies.challenge
+package de.mytoysgroup.movies.challenge.presentation
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer

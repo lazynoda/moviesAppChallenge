@@ -5,18 +5,23 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.util.Log
 import androidx.work.*
+import de.mytoysgroup.movies.challenge.domain.model.Either
+import de.mytoysgroup.movies.challenge.observeOnce
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+
+typealias OnUseCaseFinish<O> = (Either<Exception, O>?) -> Unit
 
 abstract class UseCase<I, O> : Worker() {
 
     abstract val inputMapper: DataMapper<I>
     abstract val outputMapper: DataMapper<O>
 
-    fun execute(params: I): LiveData<Either<Exception, O>> {
+    fun execute(params: I, onUseCaseFinish: OnUseCaseFinish<O>? = null) {
 
         val liveData = MutableLiveData<Either<Exception, O>>()
+        onUseCaseFinish?.let { liveData.observeOnce(it) }
 
         val workRequest = OneTimeWorkRequest.Builder(this::class.java)
                 .setInputData(params.toInputData())
@@ -24,13 +29,13 @@ abstract class UseCase<I, O> : Worker() {
 
         val liveWorkStatus = runWorker(workRequest)
 
-        liveWorkStatus.observeOnce {
+        liveWorkStatus.whenWorkFinish {
+            Log.d(this::class.java.simpleName, "Notify work result: ${it.state.name}")
             liveData.value = when (it.state) {
                 State.SUCCEEDED -> Either.Success(it.toOutput())
                 else -> Either.Failure(Exception())
             }
         }
-        return liveData
     }
 
     final override fun doWork() = try {
@@ -40,7 +45,7 @@ abstract class UseCase<I, O> : Worker() {
 
         Result.SUCCESS
     } catch (e: Exception) {
-        Log.w("TAG", e)
+        Log.w(this::class.java.simpleName, e)
 
         Result.FAILURE
     }
@@ -53,13 +58,14 @@ abstract class UseCase<I, O> : Worker() {
         return workManager.getStatusById(workRequest.id)
     }
 
-    private inline fun LiveData<WorkStatus>.observeOnce(crossinline action: (workStatus: WorkStatus) -> Unit) {
+    private inline fun LiveData<WorkStatus>.whenWorkFinish(crossinline action: (workStatus: WorkStatus) -> Unit) {
         observeForever(object : Observer<WorkStatus> {
             override fun onChanged(workStatus: WorkStatus?) {
+                Log.d(this@UseCase::class.java.simpleName, "WorkStatus changed: ${workStatus?.state?.name}")
                 workStatus ?: return
                 if (workStatus.state.isFinished) {
-                    removeObserver(this)
                     action(workStatus)
+                    removeObserver(this)
                 }
             }
         })
