@@ -20,10 +20,10 @@ class SearchAdapter(private val listener: OnSelectMovieListener) : RecyclerView.
         setHasStableIds(true)
     }
 
-    fun addNewItems(items: List<Movie>) {
-        val updatedPosition = this.items.size
-        this.items.addAll(items)
-        notifyItemRangeInserted(updatedPosition, items.size)
+    fun updateItems(newItems: List<Movie>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

@@ -50,7 +50,7 @@ class ListActivity : BaseActivity() {
     }
 
     private fun manageSearchResult(movies: List<Movie>) {
-        adapter.addNewItems(movies)
+        adapter.updateItems(movies)
     }
 
     private fun selectMovie(movie: Movie) = navigateTo(movie.id)
