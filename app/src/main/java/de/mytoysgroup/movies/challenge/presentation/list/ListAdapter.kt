@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.load
-import kotlinx.android.synthetic.main.cell_search.view.*
+import kotlinx.android.synthetic.main.cell_list.view.*
 
 typealias OnSelectMovieListener = ((Movie) -> Unit)?
 
@@ -27,7 +27,7 @@ class SearchAdapter(private val listener: OnSelectMovieListener) : RecyclerView.
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(parent.inflate(R.layout.cell_search))
+            ViewHolder(parent.inflate(R.layout.cell_list))
 
     override fun getItemCount() = items.size
 
