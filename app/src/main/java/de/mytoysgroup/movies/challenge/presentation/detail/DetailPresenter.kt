@@ -9,15 +9,17 @@ import de.mytoysgroup.movies.challenge.domain.search.GetMovieByIdUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.AddToWishlistUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.RemoveFromWishlistUseCase
 
-class DetailPresenter : ViewModel() {
+class DetailPresenter(private val getMovieByIdUseCase: GetMovieByIdUseCase,
+                      private val addToWishlistUseCase: AddToWishlistUseCase,
+                      private val removeFromWishlistUseCase: RemoveFromWishlistUseCase) : ViewModel() {
+
+    constructor() : this(GetMovieByIdUseCase(),
+            AddToWishlistUseCase(),
+            RemoveFromWishlistUseCase())
 
     private val _movie = MutableLiveData<Movie>()
     val movie: LiveData<Movie>
         get() = _movie
-
-    private val getMovieByIdUseCase by lazy { GetMovieByIdUseCase() }
-    private val addToWishlistUseCase by lazy { AddToWishlistUseCase() }
-    private val removeFromWishlistUseCase by lazy { RemoveFromWishlistUseCase() }
 
     fun getMovie(movieId: String) = getMovieByIdUseCase.execute(movieId) {
         when (it) {

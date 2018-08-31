@@ -11,17 +11,20 @@ import de.mytoysgroup.movies.challenge.domain.wishlist.GetWishlistMoviesUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.RemoveFromWishlistUseCase
 import kotlin.properties.Delegates
 
-class ListPresenter : ViewModel() {
+class ListPresenter(private val searchUseCase: SearchUseCase,
+                    private val getWishlistMoviesUseCase: GetWishlistMoviesUseCase,
+                    private val addToWishlistUseCase: AddToWishlistUseCase,
+                    private val removeFromWishlistUseCase: RemoveFromWishlistUseCase) : ViewModel() {
+
+    constructor() : this(SearchUseCase(),
+            GetWishlistMoviesUseCase(),
+            AddToWishlistUseCase(),
+            RemoveFromWishlistUseCase())
 
     val moviesLiveData: LiveData<List<Movie>>
         get() = _moviesLiveData
 
     private val _moviesLiveData = MutableLiveData<List<Movie>>()
-
-    private val searchUseCase by lazy { SearchUseCase() }
-    private val getWishlistMoviesUseCase by lazy { GetWishlistMoviesUseCase() }
-    private val addToWishlistUseCase by lazy { AddToWishlistUseCase() }
-    private val removeFromWishlistUseCase by lazy { RemoveFromWishlistUseCase() }
 
     private var viewType by Delegates.observable<ViewType>(ViewType.Wishlist) { _, oldValue, newValue ->
         if (oldValue != newValue)
