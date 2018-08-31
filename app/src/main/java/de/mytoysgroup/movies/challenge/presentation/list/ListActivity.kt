@@ -1,4 +1,4 @@
-package de.mytoysgroup.movies.challenge.presentation.search
+package de.mytoysgroup.movies.challenge.presentation.list
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,25 +10,25 @@ import de.mytoysgroup.movies.challenge.BaseActivity
 import de.mytoysgroup.movies.challenge.Navigator.navigateTo
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
-import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.activity_list.*
 
 
-class SearchActivity : BaseActivity() {
+class ListActivity : BaseActivity() {
 
-    private val presenter by lazy { presenter<SearchPresenter>(this) }
+    private val presenter by lazy { presenter<ListPresenter>(this) }
 
     private val adapter: SearchAdapter
         get() = searchResultLayout.adapter as SearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_list)
 
         setSupportActionBar(toolbar)
 
         with(searchResultLayout) {
             val span = if (Configuration.ORIENTATION_LANDSCAPE == resources.configuration.orientation) 4 else 2
-            layoutManager = GridLayoutManager(this@SearchActivity, span, LinearLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(this@ListActivity, span, LinearLayoutManager.VERTICAL, false)
             adapter = SearchAdapter(::selectMovie)
         }
 

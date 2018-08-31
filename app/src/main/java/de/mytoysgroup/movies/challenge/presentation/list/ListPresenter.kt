@@ -1,4 +1,4 @@
-package de.mytoysgroup.movies.challenge.presentation.search
+package de.mytoysgroup.movies.challenge.presentation.list
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.domain.search.SearchUseCase
 import de.mytoysgroup.movies.challenge.observeOnce
 
-class SearchPresenter : ViewModel() {
+class ListPresenter : ViewModel() {
 
     private val _searchData = MutableLiveData<List<Movie>>()
     val searchData: LiveData<List<Movie>>
