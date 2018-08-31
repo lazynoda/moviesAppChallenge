@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModel
 import de.mytoysgroup.movies.challenge.domain.model.Either
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.domain.search.SearchUseCase
-import de.mytoysgroup.movies.challenge.observeOnce
 
 class ListPresenter : ViewModel() {
 
@@ -16,7 +15,7 @@ class ListPresenter : ViewModel() {
 
     private val searchUseCase by lazy { SearchUseCase() }
 
-    fun search(query: String) = searchUseCase.execute(query).observeOnce {
+    fun search(query: String) = searchUseCase.execute(query) {
         when (it) {
             is Either.Failure -> TODO("Show error")
             is Either.Success -> _searchData.value = it.value

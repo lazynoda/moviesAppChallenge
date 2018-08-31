@@ -45,6 +45,15 @@
                 app:layout_constraintRight_toLeftOf="@id/posterGuideline"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/wishlistButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:src="@drawable/ic_star_border"
+                app:layout_constraintRight_toRightOf="@id/posterImage"
+                app:layout_constraintTop_toTopOf="@id/posterImage" />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/titleLabel"
                 android:layout_width="0dp"

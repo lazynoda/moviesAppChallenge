@@ -6,18 +6,22 @@ import android.arch.lifecycle.Observer
 import android.util.Log
 import androidx.work.*
 import de.mytoysgroup.movies.challenge.domain.model.Either
+import de.mytoysgroup.movies.challenge.observeOnce
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+
+typealias OnUseCaseFinish<O> = (Either<Exception, O>?) -> Unit
 
 abstract class UseCase<I, O> : Worker() {
 
     abstract val inputMapper: DataMapper<I>
     abstract val outputMapper: DataMapper<O>
 
-    fun execute(params: I): LiveData<Either<Exception, O>> {
+    fun execute(params: I, onUseCaseFinish: OnUseCaseFinish<O>? = null) {
 
         val liveData = MutableLiveData<Either<Exception, O>>()
+        onUseCaseFinish?.let { liveData.observeOnce(it) }
 
         val workRequest = OneTimeWorkRequest.Builder(this::class.java)
                 .setInputData(params.toInputData())
@@ -31,7 +35,6 @@ abstract class UseCase<I, O> : Worker() {
                 else -> Either.Failure(Exception())
             }
         }
-        return liveData
     }
 
     final override fun doWork() = try {
@@ -41,7 +44,7 @@ abstract class UseCase<I, O> : Worker() {
 
         Result.SUCCESS
     } catch (e: Exception) {
-        Log.w("TAG", e)
+        Log.w(this::class.java.simpleName, e)
 
         Result.FAILURE
     }

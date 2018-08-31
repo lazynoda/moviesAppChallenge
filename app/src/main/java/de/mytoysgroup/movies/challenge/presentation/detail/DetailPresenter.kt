@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModel
 import de.mytoysgroup.movies.challenge.domain.model.Either
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.domain.search.GetMovieByIdUseCase
-import de.mytoysgroup.movies.challenge.observeOnce
 
 class DetailPresenter : ViewModel() {
 
@@ -16,7 +15,7 @@ class DetailPresenter : ViewModel() {
 
     private val getMovieByIdUseCase by lazy { GetMovieByIdUseCase() }
 
-    fun getMovie(movieId: String) = getMovieByIdUseCase.execute(movieId).observeOnce {
+    fun getMovie(movieId: String) = getMovieByIdUseCase.execute(movieId) {
         when (it) {
             is Either.Failure -> TODO()
             is Either.Success -> _movie.value = it.value

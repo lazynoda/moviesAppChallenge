@@ -1,10 +1,10 @@
 package de.mytoysgroup.movies.challenge.presentation.detail
 
 import android.os.Bundle
-import de.mytoysgroup.movies.challenge.presentation.BaseActivity
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import de.mytoysgroup.movies.challenge.load
+import de.mytoysgroup.movies.challenge.presentation.BaseActivity
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : BaseActivity() {
@@ -19,10 +19,10 @@ class DetailActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = null
 
+        setupObservers()
+
         val pathData = intent?.data?.lastPathSegment ?: TODO()
         presenter.getMovie(pathData)
-
-        setupObservers()
     }
 
     private fun setupObservers() = with(presenter) {
@@ -34,5 +34,6 @@ class DetailActivity : BaseActivity() {
         posterImage.load(movie.poster)
         titleLabel.text = movie.title
         descriptionLabel.text = movie.description
+        wishlistButton.setImageResource(if (movie.wishlist) R.drawable.ic_star else R.drawable.ic_star_border)
     }
 }
