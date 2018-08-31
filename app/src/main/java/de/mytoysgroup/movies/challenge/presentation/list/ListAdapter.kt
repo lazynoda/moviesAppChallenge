@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.cell_list.view.*
 
 typealias OnSelectMovieListener = ((Movie) -> Unit)?
 
-class SearchAdapter(private val listener: OnSelectMovieListener) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class ListAdapter(private val listener: OnSelectMovieListener) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     private var items: MutableList<Movie> = mutableListOf()
 
@@ -40,6 +40,7 @@ class SearchAdapter(private val listener: OnSelectMovieListener) : RecyclerView.
         fun bind(movie: Movie, listener: OnSelectMovieListener) = with(itemView) {
             posterImage.load(movie.poster)
             titleLabel.text = movie.title
+            wishlistButton.setImageResource(if (movie.wishlist) R.drawable.ic_star else R.drawable.ic_star_border)
 
             setOnClickListener { listener?.invoke(movie) }
         }

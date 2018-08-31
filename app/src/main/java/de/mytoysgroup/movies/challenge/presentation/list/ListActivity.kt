@@ -17,8 +17,8 @@ class ListActivity : BaseActivity() {
 
     private val presenter by lazy { presenter<ListPresenter>(this) }
 
-    private val adapter: SearchAdapter
-        get() = searchResultLayout.adapter as SearchAdapter
+    private val adapter: ListAdapter
+        get() = searchResultLayout.adapter as ListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class ListActivity : BaseActivity() {
         with(searchResultLayout) {
             val span = if (Configuration.ORIENTATION_LANDSCAPE == resources.configuration.orientation) 4 else 2
             layoutManager = GridLayoutManager(this@ListActivity, span, LinearLayoutManager.VERTICAL, false)
-            adapter = SearchAdapter(::selectMovie)
+            adapter = ListAdapter(::selectMovie)
         }
 
         setupObservers()
