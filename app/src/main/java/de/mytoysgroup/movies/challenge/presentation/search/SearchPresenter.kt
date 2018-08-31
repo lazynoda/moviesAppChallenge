@@ -11,16 +11,15 @@ import de.mytoysgroup.movies.challenge.observeOnce
 class SearchPresenter : ViewModel() {
 
     private val _searchData = MutableLiveData<List<Movie>>()
-    val searchData: LiveData<List<Movie>> = _searchData
+    val searchData: LiveData<List<Movie>>
+        get() = _searchData
 
     private val searchUseCase by lazy { SearchUseCase() }
 
-    fun search(query: String) {
-        searchUseCase.execute(query).observeOnce {
-            when (it) {
-                is Either.Failure -> TODO("Show error")
-                is Either.Success -> _searchData.value = it.value
-            }
+    fun search(query: String) = searchUseCase.execute(query).observeOnce {
+        when (it) {
+            is Either.Failure -> TODO("Show error")
+            is Either.Success -> _searchData.value = it.value
         }
     }
 

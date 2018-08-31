@@ -15,9 +15,9 @@
         <activity android:name=".presentation.search.SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -31,6 +31,19 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.detail.DetailActivity">
+            <intent-filter android:order="1">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="@string/deep_linking_host"
+                    android:pathPattern="/tt.*"
+                    android:scheme="@string/deep_linking_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

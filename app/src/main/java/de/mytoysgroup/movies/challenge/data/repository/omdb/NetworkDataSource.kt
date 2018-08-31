@@ -48,6 +48,14 @@ internal class NetworkDataSource private constructor(private val networkClient: 
     private fun JSONObject.toMovie() = Movie(
             getString("imdbID"),
             getString("Title"),
-            Uri.parse(getString("Poster"))
+            Uri.parse(getString("Poster")),
+            optString("Plot"),
+            optString("Website")?.let(Uri::parse),
+            optJSONArray("Ratings")?.map {
+                Movie.Rating(
+                        it.getString("Source"),
+                        it.getString("Value")
+                )
+            }
     )
 }

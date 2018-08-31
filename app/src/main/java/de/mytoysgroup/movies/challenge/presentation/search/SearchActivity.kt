@@ -1,12 +1,13 @@
 package de.mytoysgroup.movies.challenge.presentation.search
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import android.widget.Toast
 import de.mytoysgroup.movies.challenge.BaseActivity
+import de.mytoysgroup.movies.challenge.Navigator.navigateTo
 import de.mytoysgroup.movies.challenge.R
 import de.mytoysgroup.movies.challenge.domain.model.Movie
 import kotlinx.android.synthetic.main.activity_search.*
@@ -26,7 +27,8 @@ class SearchActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         with(searchResultLayout) {
-            layoutManager = GridLayoutManager(this@SearchActivity, 2, LinearLayoutManager.VERTICAL, false)
+            val span = if (Configuration.ORIENTATION_LANDSCAPE == resources.configuration.orientation) 4 else 2
+            layoutManager = GridLayoutManager(this@SearchActivity, span, LinearLayoutManager.VERTICAL, false)
             adapter = SearchAdapter(::selectMovie)
         }
 
@@ -51,9 +53,7 @@ class SearchActivity : BaseActivity() {
         adapter.addNewItems(movies)
     }
 
-    private fun selectMovie(movie: Movie) {
-        Toast.makeText(this, "Movie ${movie.id}", Toast.LENGTH_SHORT).show()
-    }
+    private fun selectMovie(movie: Movie) = navigateTo(movie.id)
 
     private fun Menu.setupSearchView() {
         val menuItem = findItem(R.id.action_search)

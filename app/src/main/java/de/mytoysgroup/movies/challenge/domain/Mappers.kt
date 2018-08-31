@@ -31,9 +31,9 @@ object Mappers {
     val MOVIE_LIST = object : DataMapper<List<Movie>> {
         @Suppress("UNCHECKED_CAST")
         override fun fromMap(map: Map<String, Any?>) =
-                (map["key"] as List<Map<String, Any?>>).map { Movie.fromMap(it) }
+                (map["key"] as List<Map<String, Any?>>).map(Movie.Mapper::fromMap)
 
         override fun toMap(value: List<Movie>) =
-                mapOf("key" to value.map { Movie.toMap(it) })
+                mapOf("key" to value.map(Movie.Mapper::toMap))
     }
 }
