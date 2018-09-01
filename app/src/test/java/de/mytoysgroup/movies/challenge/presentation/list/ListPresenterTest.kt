@@ -12,6 +12,7 @@ import de.mytoysgroup.movies.challenge.domain.wishlist.AddToWishlistUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.GetWishlistMoviesUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.RemoveFromWishlistUseCase
 import de.mytoysgroup.movies.challenge.hasItems
+import de.mytoysgroup.movies.challenge.lazyMock
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -25,21 +26,16 @@ class ListPresenterTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    private lateinit var searchUseCase: SearchUseCase
-    private lateinit var getWishlistMoviesUseCase: GetWishlistMoviesUseCase
-    private lateinit var addToWishlistUseCase: AddToWishlistUseCase
-    private lateinit var removeFromWishlistUseCase: RemoveFromWishlistUseCase
+    private val mockSearchUseCase by lazyMock<SearchUseCase>()
+    private val mockGetWishlistMoviesUseCase by lazyMock<GetWishlistMoviesUseCase>()
+    private val mockAddToWishlistUseCase by lazyMock<AddToWishlistUseCase>()
+    private val mockRemoveFromWishlistUseCase by lazyMock<RemoveFromWishlistUseCase>()
 
     private lateinit var subjectUnderTest: ListPresenter
 
     @Before
     fun setUp() {
-        searchUseCase = mock()
-        getWishlistMoviesUseCase = mock()
-        addToWishlistUseCase = mock()
-        removeFromWishlistUseCase = mock()
-
-        subjectUnderTest = ListPresenter(searchUseCase, getWishlistMoviesUseCase, addToWishlistUseCase, removeFromWishlistUseCase)
+        subjectUnderTest = ListPresenter(mockSearchUseCase, mockGetWishlistMoviesUseCase, mockAddToWishlistUseCase, mockRemoveFromWishlistUseCase)
     }
 
     @Test
@@ -47,12 +43,12 @@ class ListPresenterTest {
         val fakeMovieList = listOf<Movie>(mock(), mock(), mock(), mock())
         val fakeSearchQuery = "queryToSearch"
 
-        doSuccessUseCase(fakeMovieList).`when`(searchUseCase).execute(any(), any())
+        doSuccessUseCase(fakeMovieList).`when`(mockSearchUseCase).execute(any(), any())
 
         subjectUnderTest.search(fakeSearchQuery)
 
         val captor = argumentCaptor<String>()
-        verify(searchUseCase).execute(captor.capture(), any())
+        verify(mockSearchUseCase).execute(captor.capture(), any())
 
         assertThat(captor.firstValue, equalTo(fakeSearchQuery))
 
