@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn okhttp3.**
+-dontwarn okio.**
+
+-keepclassmembers class * implements androidx.work.Worker {
+    public <init>();
+}
+
+-assumenosideeffects class android.util.Log { *; }
