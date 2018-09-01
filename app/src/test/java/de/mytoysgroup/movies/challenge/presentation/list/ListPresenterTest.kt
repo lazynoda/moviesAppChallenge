@@ -43,7 +43,7 @@ class ListPresenterTest {
     }
 
     @Test
-    fun `WHEN search movies with any query THEN query is used to search AND liveData contains movie list from search response`() {
+    fun `WHEN search movies with any query AND search use case successes THEN query is used to search AND liveData contains movie list from search response`() {
         val fakeMovieList = listOf<Movie>(mock(), mock(), mock(), mock())
         val fakeSearchQuery = "queryToSearch"
 
