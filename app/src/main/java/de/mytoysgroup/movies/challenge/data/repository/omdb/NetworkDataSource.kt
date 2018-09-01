@@ -6,7 +6,7 @@ import de.mytoysgroup.movies.challenge.domain.model.Movie
 import org.json.JSONArray
 import org.json.JSONObject
 
-internal class NetworkDataSource private constructor(private val networkClient: NetworkClient) {
+internal class NetworkDataSource internal constructor(private val networkClient: NetworkClient) {
 
     companion object {
         private const val HOST = "www.omdbapi.com"

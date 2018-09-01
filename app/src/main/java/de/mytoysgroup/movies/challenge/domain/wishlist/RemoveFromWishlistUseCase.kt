@@ -5,7 +5,7 @@ import de.mytoysgroup.movies.challenge.data.repository.wishlist.WishlistReposito
 import de.mytoysgroup.movies.challenge.domain.Mappers
 import de.mytoysgroup.movies.challenge.domain.UseCase
 
-class RemoveFromWishlistUseCase private constructor(wishlistRepository: WishlistRepository? = null) : UseCase<String, Unit>() {
+class RemoveFromWishlistUseCase internal constructor(wishlistRepository: WishlistRepository? = null) : UseCase<String, Unit>() {
 
     constructor() : this(null)
     constructor(context: Context) : this(WishlistRepository(context))

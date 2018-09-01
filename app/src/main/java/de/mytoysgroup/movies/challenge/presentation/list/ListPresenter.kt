@@ -11,10 +11,10 @@ import de.mytoysgroup.movies.challenge.domain.wishlist.GetWishlistMoviesUseCase
 import de.mytoysgroup.movies.challenge.domain.wishlist.RemoveFromWishlistUseCase
 import kotlin.properties.Delegates
 
-class ListPresenter(private val searchUseCase: SearchUseCase,
-                    private val getWishlistMoviesUseCase: GetWishlistMoviesUseCase,
-                    private val addToWishlistUseCase: AddToWishlistUseCase,
-                    private val removeFromWishlistUseCase: RemoveFromWishlistUseCase) : ViewModel() {
+class ListPresenter internal constructor(private val searchUseCase: SearchUseCase,
+                                         private val getWishlistMoviesUseCase: GetWishlistMoviesUseCase,
+                                         private val addToWishlistUseCase: AddToWishlistUseCase,
+                                         private val removeFromWishlistUseCase: RemoveFromWishlistUseCase) : ViewModel() {
 
     constructor() : this(SearchUseCase(),
             GetWishlistMoviesUseCase(),

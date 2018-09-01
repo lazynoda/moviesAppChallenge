@@ -2,7 +2,7 @@ package de.mytoysgroup.movies.challenge.data.repository.wishlist
 
 import android.content.Context
 
-class WishlistRepository private constructor(private val storageDataSource: StorageDataSource) {
+class WishlistRepository internal constructor(private val storageDataSource: StorageDataSource) {
 
     constructor(context: Context) : this(StorageDataSource(context))
 

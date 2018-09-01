@@ -1,6 +1,6 @@
 package de.mytoysgroup.movies.challenge.data.repository.omdb
 
-class OmdbRepository private constructor(private val networkDataSource: NetworkDataSource) {
+class OmdbRepository internal constructor(private val networkDataSource: NetworkDataSource) {
 
     constructor() : this(NetworkDataSource())
 

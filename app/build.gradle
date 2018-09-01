@@ -9,8 +9,10 @@ android {
         applicationId "de.mytoysgroup.movies.challenge"
         minSdkVersion 19
         targetSdkVersion 28
+
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,6 +35,13 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1"
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }
