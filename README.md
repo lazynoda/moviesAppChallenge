@@ -8,11 +8,21 @@ Special mention to `UseCase` class, which contains all logic to run background j
 
 ## Testing
 
-I'm sorry to inform that right now there are not test (unit nor instrumentation).
+About Unit test, I've used JUnit 4, Mockito and Mockito-kotlin (which contains a lot of helpers to avoid some Kotlin features, like null-validation). About what to test or not, I always test "for this input, I expect this output" and never test internal code itself. I'm never sure if test call dependencies (for example test if a presenter calls a use case) because it doesn't test input-output pair. But sometimes it's important to verify call params or verify that some dependency is never called. I've only tested presenters because it contains some complex code. Use case and repository are most of time one line code.
+
+For Instrumentation test I've tested basic view values, like "this label should contains that text" or "this click should launch that intent". In detail screen I've overridden the intent to be the same that list screen launches.
+
+I should use MockWebServer to not depend of API response calls and know exactly what will be showed in each screen. But I haven't time to do it :(
 
 ## UI/UX
 
 This is my... Anchilles hell? I'm very very bad designing an interface. I know most of the platform design guidelines, but I haven't creativity with colors, forms, where to show this or that data. I've created a simple list/detail screens using OMDB colors from their website.
+
+## Dependency injection
+
+I've used multiple times Dagger 2 and I know Koin and Kodein, but for simple and small projects like this one, I think it's not necessary. I've created a constructor with no params (or minimal required params) which calls to other constructor that receive all class dependencies. This second constructor should have package-private visbility, but in Kotlin I use internal, and it's used in test.
+
+I don't like to use interfaces if they are not necessary for production environment. Yes, that second constructor it's not required and it's used only for test, but I need something to inject mock dependencies. Because Kotlin has final modifier by default, I've used `mock-maker-inline` to open it in test environment.
 
 ## 3rd party libs
 
